@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blufox Mobile — New Hire Onboarding</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #071a0e;
+    --surface: #0d2417;
+    --surface2: #132e1e;
+    --border: #1e4a2e;
+    --accent: #2ecc71;
+    --accent2: #a8ff78;
+    --text: #e8f5ec;
+    --muted: #6b9e7a;
+    --success: #57f59a;
+    --radius: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse 80% 60% at 20% -10%, rgba(46,204,113,0.10) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 110%, rgba(168,255,120,0.07) 0%, transparent 60%);
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 40px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(7,26,14,0.85);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 3px;
+    background: linear-gradient(90deg, var(--accent), #a8ff78);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .logo span {
+    color: var(--accent2);
+    -webkit-text-fill-color: var(--accent2);
+  }
+
+  /* ─── TABS ─── */
+  .tabs {
+    display: flex;
+    gap: 6px;
+    background: var(--surface);
+    border-radius: 50px;
+    padding: 4px;
+    border: 1px solid var(--border);
+  }
+
+  .tab-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.25s;
+    background: transparent;
+    color: var(--muted);
+    letter-spacing: 0.3px;
+  }
+
+  .tab-btn.active {
+    background: var(--accent);
+    color: #000;
+    font-weight: 600;
+  }
+
+  .tab-btn:not(.active):hover {
+    color: var(--text);
+    background: var(--surface2);
+  }
+
+  /* ─── MAIN ─── */
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 48px 24px;
+  }
+
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ─── PAGE HEADER ─── */
+  .page-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    letter-spacing: 2px;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .page-subtitle {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 36px;
+    font-weight: 400;
+  }
+
+  /* ─── CARDS ─── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+
+  .card-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+
+  /* ─── FORM ELEMENTS ─── */
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .form-grid.full { grid-template-columns: 1fr; }
+  .span2 { grid-column: 1 / -1; }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  input, select {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    padding: 11px 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    width: 100%;
+  }
+
+  input:focus, select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(46,204,113,0.18);
+  }
+
+  input[readonly] {
+    color: var(--muted);
+    cursor: default;
+    background: rgba(26,34,53,0.5);
+  }
+
+  input[readonly]:focus {
+    border-color: var(--border);
+    box-shadow: none;
+  }
+
+  select option {
+    background: var(--surface2);
+  }
+
+  /* ─── DIVIDER ─── */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 24px 0;
+  }
+
+  /* ─── BUTTONS ─── */
+  .btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 12px 28px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.3px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #000;
+  }
+
+  .btn-primary:hover {
+    background: #33cfff;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(46,204,113,0.35);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+
+  .btn-secondary:hover {
+    color: var(--text);
+    border-color: var(--muted);
+    background: var(--surface2);
+  }
+
+  .btn-success {
+    background: var(--success);
+    color: #000;
+  }
+
+  .btn-success:hover {
+    background: #33eeaa;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(87,245,154,0.35);
+  }
+
+  .btn-danger {
+    background: transparent;
+    color: #ff5252;
+    border: 1px solid rgba(255,82,82,0.3);
+    font-size: 12px;
+    padding: 8px 16px;
+  }
+
+  .btn-danger:hover {
+    background: rgba(255,82,82,0.1);
+    border-color: #ff5252;
+  }
+
+  .btn-row {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 24px;
+    align-items: center;
+  }
+
+  /* ─── STORE MANAGER LIST (Page 1) ─── */
+  .store-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .store-row {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    display: grid;
+    grid-template-columns: 160px 1fr 1fr auto;
+    gap: 12px;
+    align-items: center;
+    transition: border-color 0.2s;
+  }
+
+  .store-row:hover {
+    border-color: rgba(46,204,113,0.35);
+  }
+
+  .store-name-tag {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--accent);
+  }
+
+  .store-address-tag {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .store-row input {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .store-row .field label {
+    font-size: 10px;
+  }
+
+  .save-indicator {
+    font-size: 11px;
+    color: var(--success);
+    opacity: 0;
+    transition: opacity 0.3s;
+    white-space: nowrap;
+  }
+
+  .save-indicator.show { opacity: 1; }
+
+  /* ─── SEARCH ─── */
+  .search-wrap {
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  .search-wrap input {
+    padding-left: 38px;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 13px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-size: 15px;
+    pointer-events: none;
+  }
+
+  /* ─── SUBMIT PAGE ─── */
+  .webhook-notice {
+    background: rgba(46,204,113,0.07);
+    border: 1px solid rgba(46,204,113,0.25);
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: var(--accent);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .manager-preview {
+    background: var(--surface2);
+    border: 1px solid rgba(0,232,157,0.2);
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: var(--success);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .manager-preview.warn {
+    border-color: rgba(255,107,43,0.3);
+    color: var(--accent2);
+  }
+
+  /* ─── TOAST ─── */
+  #toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: var(--success);
+    color: #000;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 14px 22px;
+    border-radius: 10px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  #toast.show {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  #toast.error {
+    background: #ff5252;
+    color: #fff;
+  }
+
+  /* ─── SPINNER ─── */
+  .spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(0,0,0,0.3);
+    border-top-color: #000;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    display: none;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ─── WEBHOOK CONFIG ─── */
+  .webhook-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+    margin-bottom: 28px;
+  }
+
+  .webhook-row .field { flex: 1; }
+
+  .webhook-status {
+    font-size: 11px;
+    margin-top: 4px;
+  }
+
+  .webhook-status.ok { color: var(--success); }
+  .webhook-status.missing { color: var(--accent2); }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 640px) {
+    header { padding: 16px 20px; flex-direction: column; gap: 14px; }
+    main { padding: 28px 16px; }
+    .form-grid { grid-template-columns: 1fr; }
+    .store-row { grid-template-columns: 1fr; }
+    .page-title { font-size: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Blufox <span>Mobile</span></div>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showPage('setup')">⚙ Store Setup</button>
+    <button class="tab-btn" onclick="showPage('form')">📋 New Hire Form</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- PAGE 1: STORE MANAGER SETUP               -->
+  <!-- ══════════════════════════════════════════ -->
+  <div id="page-setup" class="page active">
+    <div class="page-title">Store Setup</div>
+    <div class="page-subtitle">Set manager names &amp; emails per store. Changes save automatically as you type.</div>
+
+    <div class="card">
+      <div class="card-title">⚡ Zapier Webhook URL</div>
+      <div class="webhook-row">
+        <div class="field">
+          <label>Webhook URL</label>
+          <input type="url" id="webhookUrl" placeholder="https://hooks.zapier.com/hooks/catch/..." oninput="saveWebhook()">
+          <div id="webhookStatus" class="webhook-status missing">No webhook saved</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">👤 Store Managers</div>
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" placeholder="Search stores..." oninput="filterStores(this.value)">
+      </div>
+      <div class="store-list" id="storeList"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- PAGE 2: NEW HIRE FORM                     -->
+  <!-- ══════════════════════════════════════════ -->
+  <div id="page-form" class="page">
+    <div class="page-title">New Hire Form</div>
+    <div class="page-subtitle">Complete all fields. Submission triggers the onboarding email to the store manager &amp; new hire.</div>
+
+    <!-- Store Selection -->
+    <div class="card">
+      <div class="card-title">🏪 Store Information</div>
+      <div class="form-grid">
+        <div class="field span2">
+          <label>Store Name</label>
+          <select id="storeSelect" onchange="onStoreSelect()">
+            <option value="">— Select a Store —</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Store Address</label>
+          <input type="text" id="storeAddress" readonly placeholder="Auto-filled">
+        </div>
+        <div class="field">
+          <label>City</label>
+          <input type="text" id="storeCity" readonly placeholder="Auto-filled">
+        </div>
+        <div class="field">
+          <label>State</label>
+          <input type="text" id="storeState" readonly placeholder="Auto-filled">
+        </div>
+        <div class="field">
+          <label>Zip Code</label>
+          <input type="text" id="storeZip" readonly placeholder="Auto-filled">
+        </div>
+      </div>
+
+      <div id="managerPreview" style="display:none"></div>
+    </div>
+
+    <!-- New Hire Info -->
+    <div class="card">
+      <div class="card-title">🧑‍💼 New Hire Information</div>
+      <div class="form-grid">
+        <div class="field span2">
+          <label>New Hire Full Name</label>
+          <input type="text" id="hireName" placeholder="First and Last Name">
+        </div>
+        <div class="field">
+          <label>Start Date</label>
+          <input type="date" id="startDate">
+        </div>
+        <div class="field">
+          <label>RQ4 Username</label>
+          <input type="text" id="rq4User" placeholder="e.g. jsmith">
+        </div>
+        <div class="field">
+          <label>Blufox Email</label>
+          <input type="email" id="blufoxEmail" placeholder="name@blufoxmobile.com">
+        </div>
+        <div class="field">
+          <label>Personal Email</label>
+          <input type="email" id="personalEmail" placeholder="personal@email.com">
+        </div>
+      </div>
+    </div>
+
+    <!-- Manager Override (editable) -->
+    <div class="card">
+      <div class="card-title">📧 Manager Contact (Editable)</div>
+      <div style="font-size:13px; color:var(--muted); margin-bottom:16px;">
+        Pre-filled from your Store Setup. Edit here if needed — changes here won't affect saved defaults.
+      </div>
+      <div class="form-grid">
+        <div class="field">
+          <label>Store Manager Name</label>
+          <input type="text" id="managerName" placeholder="Select a store first">
+        </div>
+        <div class="field">
+          <label>Store Manager Email</label>
+          <input type="email" id="managerEmail" placeholder="Select a store first">
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="clearForm()">Clear Form</button>
+      <button class="btn btn-success" onclick="submitForm()" id="submitBtn">
+        <span class="spinner" id="spinner"></span>
+        <span id="submitLabel">Send Onboarding Email →</span>
+      </button>
+    </div>
+  </div>
+
+</main>
+
+<div id="toast">✓ <span id="toastMsg"></span></div>
+
+<script>
+// ══════════════════════════════════════════════════════
+// STORE DATA
+// ══════════════════════════════════════════════════════
+const STORES = [
+  { name: "Uptown",          address: "4401 N. Clarendon Road",                city: "Chicago",         state: "IL", zip: "60640" },
+  { name: "Evanston",        address: "1608 Sherman Ave",                       city: "Evanston",        state: "IL", zip: "60201" },
+  { name: "Cicero",          address: "2942 South Cicero, Unit A",              city: "Cicero",          state: "IL", zip: "60804" },
+  { name: "Kildeer",         address: "20291 N Rand Rd, Suite 113",             city: "Kildeer",         state: "IL", zip: "60074" },
+  { name: "South Skokie",    address: "6179 North Lincoln Avenue",              city: "Chicago",         state: "IL", zip: "60659" },
+  { name: "Round Lake Beach",address: "530 East Rollins Road",                  city: "Round Lake Beach",state: "IL", zip: "60073" },
+  { name: "Glenview",        address: "2840 Patriot Boulevard",                 city: "Glenview",        state: "IL", zip: "60026" },
+  { name: "Bourbonnais",     address: "1690 N State Route 50, Suite B",         city: "Bourbonnais",     state: "IL", zip: "60914" },
+  { name: "Tinley Park",     address: "15935 Harlem Ave",                       city: "Tinley Park",     state: "IL", zip: "60477" },
+  { name: "Frankfort",       address: "20151 South La Grange Road",             city: "Frankfort",       state: "IL", zip: "60423" },
+  { name: "Burbank",         address: "7782 South Cicero Avenue",               city: "Burbank",         state: "IL", zip: "60459" },
+  { name: "Dekalb",          address: "2565 Sycamore Rd",                       city: "Dekalb",          state: "IL", zip: "60115" },
+  { name: "Elkhart",         address: "199 County Road 6 W",                    city: "Elkhart",         state: "IN", zip: "46514" },
+  { name: "Evergreen Park",  address: "9524 S Western Avenue",                  city: "Evergreen Park",  state: "IL", zip: "60805" },
+  { name: "Greeneville",     address: "1331 Tusculum Blvd",                     city: "Greeneville",     state: "TN", zip: "37745" },
+  { name: "Johnson City",    address: "509 North State of Franklin Road, Suite 3", city: "Johnson City", state: "TN", zip: "37604" },
+  { name: "Oak Ridge",       address: "349 S Illinois Ave",                     city: "Oak Ridge",       state: "TN", zip: "37830" },
+  { name: "South Knoxville", address: "4409 Chapman Highway, Suite Q",          city: "Knoxville",       state: "TN", zip: "37920" },
+  { name: "Hammond",         address: "1738 165th Street, STE 100",             city: "Hammond",         state: "IN", zip: "46320" },
+  { name: "Schererville",    address: "116 U.S. 41, Suite B",                   city: "Schererville",    state: "IN", zip: "46375" },
+  { name: "Valparaiso",      address: "2710 Laporte Ave, Suite 140",            city: "Valparaiso",      state: "IN", zip: "46383" },
+  { name: "South Bend",      address: "4615 Miami Street, Suite 3",             city: "South Bend",      state: "IN", zip: "46614" },
+  { name: "Michigan City",   address: "5330 Franklin St",                       city: "Michigan City",   state: "IN", zip: "46360" },
+];
+
+// ══════════════════════════════════════════════════════
+// STORAGE HELPERS
+// ══════════════════════════════════════════════════════
+function getManagerData() {
+  try { return JSON.parse(localStorage.getItem('blufox_managers') || '{}'); }
+  catch { return {}; }
+}
+
+function saveManagerData(data) {
+  localStorage.setItem('blufox_managers', JSON.stringify(data));
+}
+
+function getWebhook() {
+  return localStorage.getItem('blufox_webhook') || '';
+}
+
+function saveWebhook() {
+  const url = document.getElementById('webhookUrl').value.trim();
+  localStorage.setItem('blufox_webhook', url);
+  const status = document.getElementById('webhookStatus');
+  if (url) {
+    status.textContent = '✓ Webhook saved';
+    status.className = 'webhook-status ok';
+  } else {
+    status.textContent = 'No webhook saved';
+    status.className = 'webhook-status missing';
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// PAGE 1: STORE LIST
+// ══════════════════════════════════════════════════════
+let saveTimers = {};
+
+function renderStoreList(filter = '') {
+  const managers = getManagerData();
+  const container = document.getElementById('storeList');
+  container.innerHTML = '';
+
+  const filtered = STORES.filter(s => s.name.toLowerCase().includes(filter.toLowerCase()));
+
+  filtered.forEach(store => {
+    const key = store.name;
+    const mgr = managers[key] || { name: '', email: '' };
+
+    const row = document.createElement('div');
+    row.className = 'store-row';
+    row.dataset.store = key;
+
+    row.innerHTML = `
+      <div>
+        <div class="store-name-tag">${store.name}</div>
+        <div class="store-address-tag">${store.city}, ${store.state}</div>
+      </div>
+      <div class="field">
+        <label>Manager Name</label>
+        <input type="text" placeholder="Enter manager name"
+               value="${mgr.name}"
+               onchange="saveManager('${key}', this, 'name')"
+               oninput="queueSave('${key}')">
+      </div>
+      <div class="field">
+        <label>Manager Email</label>
+        <input type="email" placeholder="manager@blufoxmobile.com"
+               value="${mgr.email}"
+               onchange="saveManager('${key}', this, 'email')"
+               oninput="queueSave('${key}')">
+      </div>
+      <div class="save-indicator" id="saved-${key.replace(/\s/g,'_')}">✓ Saved</div>
+    `;
+    container.appendChild(row);
+  });
+
+  if (filtered.length === 0) {
+    container.innerHTML = '<div style="text-align:center;padding:24px;color:var(--muted);font-size:14px;">No stores match your search.</div>';
+  }
+}
+
+function queueSave(storeName) {
+  const safeKey = storeName.replace(/\s/g, '_');
+  clearTimeout(saveTimers[storeName]);
+  saveTimers[storeName] = setTimeout(() => {
+    const row = document.querySelector(`[data-store="${storeName}"]`);
+    if (!row) return;
+    const inputs = row.querySelectorAll('input');
+    const managers = getManagerData();
+    managers[storeName] = {
+      name: inputs[0].value.trim(),
+      email: inputs[1].value.trim()
+    };
+    saveManagerData(managers);
+    const ind = document.getElementById('saved-' + safeKey);
+    if (ind) {
+      ind.classList.add('show');
+      setTimeout(() => ind.classList.remove('show'), 2000);
+    }
+  }, 600);
+}
+
+function saveManager(storeName, input, field) {
+  const managers = getManagerData();
+  if (!managers[storeName]) managers[storeName] = { name: '', email: '' };
+  managers[storeName][field] = input.value.trim();
+  saveManagerData(managers);
+}
+
+function filterStores(val) {
+  renderStoreList(val);
+}
+
+// ══════════════════════════════════════════════════════
+// PAGE 2: NEW HIRE FORM
+// ══════════════════════════════════════════════════════
+function populateStoreDropdown() {
+  const sel = document.getElementById('storeSelect');
+  STORES.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s.name;
+    opt.textContent = `${s.name} — ${s.city}, ${s.state}`;
+    sel.appendChild(opt);
+  });
+}
+
+function onStoreSelect() {
+  const storeName = document.getElementById('storeSelect').value;
+  if (!storeName) {
+    ['storeAddress','storeCity','storeState','storeZip','managerName','managerEmail'].forEach(id => {
+      document.getElementById(id).value = '';
+    });
+    document.getElementById('managerPreview').style.display = 'none';
+    return;
+  }
+
+  const store = STORES.find(s => s.name === storeName);
+  if (store) {
+    document.getElementById('storeAddress').value = store.address;
+    document.getElementById('storeCity').value = store.city;
+    document.getElementById('storeState').value = store.state;
+    document.getElementById('storeZip').value = store.zip;
+  }
+
+  const managers = getManagerData();
+  const mgr = managers[storeName] || { name: '', email: '' };
+  document.getElementById('managerName').value = mgr.name;
+  document.getElementById('managerEmail').value = mgr.email;
+
+  const preview = document.getElementById('managerPreview');
+  if (mgr.name || mgr.email) {
+    preview.className = 'manager-preview';
+    preview.innerHTML = `✓ Manager: <strong>${mgr.name || 'Name not set'}</strong> — ${mgr.email || 'Email not set'}`;
+  } else {
+    preview.className = 'manager-preview warn';
+    preview.innerHTML = `⚠ No manager saved for this store. Please fill in below or go to Store Setup.`;
+  }
+  preview.style.display = 'flex';
+}
+
+// ══════════════════════════════════════════════════════
+// SUBMIT
+// ══════════════════════════════════════════════════════
+async function submitForm() {
+  const webhook = getWebhook();
+  if (!webhook) {
+    showToast('No webhook URL configured. Go to Store Setup first.', true);
+    return;
+  }
+
+  const storeName   = document.getElementById('storeSelect').value;
+  const hireName    = document.getElementById('hireName').value.trim();
+  const startDate   = document.getElementById('startDate').value;
+  const rq4User     = document.getElementById('rq4User').value.trim();
+  const blufoxEmail = document.getElementById('blufoxEmail').value.trim();
+  const personalEmail = document.getElementById('personalEmail').value.trim();
+  const managerName   = document.getElementById('managerName').value.trim();
+  const managerEmail  = document.getElementById('managerEmail').value.trim();
+
+  if (!storeName || !hireName || !startDate || !rq4User || !blufoxEmail || !personalEmail) {
+    showToast('Please fill in all required fields.', true);
+    return;
+  }
+
+  const store = STORES.find(s => s.name === storeName);
+  const payload = {
+    store_name:     storeName,
+    store_address:  store ? `${store.address}, ${store.city}, ${store.state} ${store.zip}` : '',
+    store_city:     store ? store.city : '',
+    store_state:    store ? store.state : '',
+    store_zip:      store ? store.zip : '',
+    hire_name:      hireName,
+    start_date:     startDate,
+    rq4_username:   rq4User,
+    blufox_email:   blufoxEmail,
+    personal_email: personalEmail,
+    manager_name:   managerName,
+    manager_email:  managerEmail,
+    submitted_at:   new Date().toISOString()
+  };
+
+  // Show loading
+  document.getElementById('spinner').style.display = 'block';
+  document.getElementById('submitLabel').textContent = 'Sending...';
+  document.getElementById('submitBtn').disabled = true;
+
+  try {
+    await fetch(webhook, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    showToast(`Onboarding email triggered for ${hireName}!`);
+    clearForm();
+  } catch (err) {
+    showToast('Failed to send. Check webhook URL or network.', true);
+    console.error(err);
+  } finally {
+    document.getElementById('spinner').style.display = 'none';
+    document.getElementById('submitLabel').textContent = 'Send Onboarding Email →';
+    document.getElementById('submitBtn').disabled = false;
+  }
+}
+
+function clearForm() {
+  ['storeSelect','hireName','startDate','rq4User','blufoxEmail','personalEmail','managerName','managerEmail'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  ['storeAddress','storeCity','storeState','storeZip'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('managerPreview').style.display = 'none';
+}
+
+// ══════════════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════════════
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ══════════════════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════════════════
+let toastTimer;
+function showToast(msg, isError = false) {
+  const toast = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  toast.className = isError ? 'show error' : 'show';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { toast.className = ''; }, 3500);
+}
+
+// ══════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════
+(function init() {
+  renderStoreList();
+  populateStoreDropdown();
+
+  const savedWebhook = getWebhook();
+  if (savedWebhook) {
+    document.getElementById('webhookUrl').value = savedWebhook;
+    document.getElementById('webhookStatus').textContent = '✓ Webhook saved';
+    document.getElementById('webhookStatus').className = 'webhook-status ok';
+  }
+})();
+</script>
+</body>
+</html>
