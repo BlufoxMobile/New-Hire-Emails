@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Blufox Mobile — New Hire Onboarding</title>
+<title>Blufox Mobile â New Hire Onboarding</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -460,7 +460,7 @@
     <div class="page-title">Store Setup</div>
     <div class="page-subtitle">Set manager names, emails &amp; DM emails per store. Changes save automatically as you type.</div>
 
-    <!-- Webhook URL is hardcoded in JavaScript — no config needed -->
+    <!-- Webhook URL is hardcoded in JavaScript â no config needed -->
     <div class="card" style="display:none">
       <div class="card-title">Zapier Webhook URL</div>
       <div class="webhook-row">
@@ -492,7 +492,7 @@
         <div class="field span2">
           <label>Store Name</label>
           <select id="storeSelect" onchange="onStoreSelect()">
-            <option value="">— Select a Store —</option>
+            <option value="">â Select a Store â</option>
           </select>
         </div>
         <div class="field">
@@ -545,7 +545,7 @@
     <div class="card">
       <div class="card-title">Manager &amp; DM Contact (Editable)</div>
       <div style="font-size:13px; color:var(--muted); margin-bottom:16px;">
-        Pre-filled from your Store Setup. Edit here if needed — changes here won't affect saved defaults.
+        Pre-filled from your Store Setup. Edit here if needed â changes here won't affect saved defaults.
       </div>
       <div class="form-grid">
         <div class="field">
@@ -720,7 +720,7 @@ function populateStoreDropdown() {
   STORES.forEach(s => {
     const opt = document.createElement('option');
     opt.value = s.name;
-    opt.textContent = `${s.name} — ${s.city}, ${s.state}`;
+    opt.textContent = `${s.name} â ${s.city}, ${s.state}`;
     sel.appendChild(opt);
   });
 }
@@ -752,7 +752,7 @@ function onStoreSelect() {
   const preview = document.getElementById('managerPreview');
   if (mgr.name || mgr.email) {
     preview.className = 'manager-preview';
-    let previewText = `Manager: <strong>${mgr.name || 'Name not set'}</strong> — ${mgr.email || 'Email not set'}`;
+    let previewText = `Manager: <strong>${mgr.name || 'Name not set'}</strong> â ${mgr.email || 'Email not set'}`;
     if (mgr.dmEmail) {
       previewText += ` | DM: ${mgr.dmEmail}`;
     }
@@ -809,10 +809,11 @@ async function submitForm() {
   document.getElementById('submitBtn').disabled = true;
 
   try {
+    const formData = new URLSearchParams();
+    Object.entries(payload).forEach(([k, v]) => formData.append(k, v));
     await fetch(webhook, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+      body: formData
     });
     showToast(`Onboarding email triggered for ${hireName}!`);
     clearForm();
@@ -856,7 +857,7 @@ function showToast(msg, isError = false) {
   renderStoreList();
   populateStoreDropdown();
 
-  // Webhook is hardcoded — no need to load from localStorage
+  // Webhook is hardcoded â no need to load from localStorage
 })();
 </script>
 </body>
