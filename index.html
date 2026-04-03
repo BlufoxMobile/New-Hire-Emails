@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Blufox Mobile — New Hire Onboarding</title>
+<title>Blufox Mobile â New Hire Onboarding</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -31,7 +31,6 @@
       radial-gradient(ellipse 60% 40% at 80% 110%, rgba(168,255,120,0.07) 0%, transparent 60%);
   }
 
-  /* ─── HEADER ─── */
   header {
     display: flex;
     align-items: center;
@@ -60,7 +59,6 @@
     -webkit-text-fill-color: var(--accent2);
   }
 
-  /* ─── TABS ─── */
   .tabs {
     display: flex;
     gap: 6px;
@@ -95,7 +93,6 @@
     background: var(--surface2);
   }
 
-  /* ─── MAIN ─── */
   main {
     max-width: 860px;
     margin: 0 auto;
@@ -105,7 +102,6 @@
   .page { display: none; }
   .page.active { display: block; }
 
-  /* ─── PAGE HEADER ─── */
   .page-title {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 42px;
@@ -121,7 +117,6 @@
     font-weight: 400;
   }
 
-  /* ─── CARDS ─── */
   .card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -139,7 +134,6 @@
     margin-bottom: 20px;
   }
 
-  /* ─── FORM ELEMENTS ─── */
   .form-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -196,14 +190,12 @@
     background: var(--surface2);
   }
 
-  /* ─── DIVIDER ─── */
   .divider {
     border: none;
     border-top: 1px solid var(--border);
     margin: 24px 0;
   }
 
-  /* ─── BUTTONS ─── */
   .btn {
     font-family: 'DM Sans', sans-serif;
     font-size: 14px;
@@ -274,7 +266,6 @@
     align-items: center;
   }
 
-  /* ─── STORE MANAGER LIST (Page 1) ─── */
   .store-list {
     display: flex;
     flex-direction: column;
@@ -287,7 +278,7 @@
     border-radius: 8px;
     padding: 16px 20px;
     display: grid;
-    grid-template-columns: 160px 1fr 1fr auto;
+    grid-template-columns: 160px 1fr 1fr 1fr auto;
     gap: 12px;
     align-items: center;
     transition: border-color 0.2s;
@@ -328,7 +319,6 @@
 
   .save-indicator.show { opacity: 1; }
 
-  /* ─── SEARCH ─── */
   .search-wrap {
     position: relative;
     margin-bottom: 20px;
@@ -348,7 +338,6 @@
     pointer-events: none;
   }
 
-  /* ─── SUBMIT PAGE ─── */
   .webhook-notice {
     background: rgba(46,204,113,0.07);
     border: 1px solid rgba(46,204,113,0.25);
@@ -380,7 +369,6 @@
     color: var(--accent2);
   }
 
-  /* ─── TOAST ─── */
   #toast {
     position: fixed;
     bottom: 30px;
@@ -412,7 +400,6 @@
     color: #fff;
   }
 
-  /* ─── SPINNER ─── */
   .spinner {
     width: 16px;
     height: 16px;
@@ -425,7 +412,6 @@
 
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* ─── WEBHOOK CONFIG ─── */
   .webhook-row {
     display: flex;
     gap: 10px;
@@ -443,13 +429,18 @@
   .webhook-status.ok { color: var(--success); }
   .webhook-status.missing { color: var(--accent2); }
 
-  /* ─── RESPONSIVE ─── */
   @media (max-width: 640px) {
     header { padding: 16px 20px; flex-direction: column; gap: 14px; }
     main { padding: 28px 16px; }
     .form-grid { grid-template-columns: 1fr; }
     .store-row { grid-template-columns: 1fr; }
     .page-title { font-size: 32px; }
+  }
+
+  @media (max-width: 900px) {
+    .store-row { grid-template-columns: 1fr 1fr; }
+    .store-row > div:first-child { grid-column: 1 / -1; }
+    .save-indicator { grid-column: 1 / -1; text-align: right; }
   }
 </style>
 </head>
@@ -458,22 +449,19 @@
 <header>
   <div class="logo">Blufox <span>Mobile</span></div>
   <div class="tabs">
-    <button class="tab-btn active" onclick="showPage('setup')">⚙ Store Setup</button>
-    <button class="tab-btn" onclick="showPage('form')">📋 New Hire Form</button>
+    <button class="tab-btn active" onclick="showPage('setup')">Store Setup</button>
+    <button class="tab-btn" onclick="showPage('form')">New Hire Form</button>
   </div>
 </header>
 
 <main>
 
-  <!-- ══════════════════════════════════════════ -->
-  <!-- PAGE 1: STORE MANAGER SETUP               -->
-  <!-- ══════════════════════════════════════════ -->
   <div id="page-setup" class="page active">
     <div class="page-title">Store Setup</div>
-    <div class="page-subtitle">Set manager names &amp; emails per store. Changes save automatically as you type.</div>
+    <div class="page-subtitle">Set manager names, emails &amp; DM emails per store. Changes save automatically as you type.</div>
 
     <div class="card">
-      <div class="card-title">⚡ Zapier Webhook URL</div>
+      <div class="card-title">Zapier Webhook URL</div>
       <div class="webhook-row">
         <div class="field">
           <label>Webhook URL</label>
@@ -484,30 +472,26 @@
     </div>
 
     <div class="card">
-      <div class="card-title">👤 Store Managers</div>
+      <div class="card-title">Store Managers</div>
       <div class="search-wrap">
-        <span class="search-icon">🔍</span>
+        <span class="search-icon">&#x1F50D;</span>
         <input type="text" placeholder="Search stores..." oninput="filterStores(this.value)">
       </div>
       <div class="store-list" id="storeList"></div>
     </div>
   </div>
 
-  <!-- ══════════════════════════════════════════ -->
-  <!-- PAGE 2: NEW HIRE FORM                     -->
-  <!-- ══════════════════════════════════════════ -->
   <div id="page-form" class="page">
     <div class="page-title">New Hire Form</div>
     <div class="page-subtitle">Complete all fields. Submission triggers the onboarding email to the store manager &amp; new hire.</div>
 
-    <!-- Store Selection -->
     <div class="card">
-      <div class="card-title">🏪 Store Information</div>
+      <div class="card-title">Store Information</div>
       <div class="form-grid">
         <div class="field span2">
           <label>Store Name</label>
           <select id="storeSelect" onchange="onStoreSelect()">
-            <option value="">— Select a Store —</option>
+            <option value="">â Select a Store â</option>
           </select>
         </div>
         <div class="field">
@@ -531,9 +515,8 @@
       <div id="managerPreview" style="display:none"></div>
     </div>
 
-    <!-- New Hire Info -->
     <div class="card">
-      <div class="card-title">🧑‍💼 New Hire Information</div>
+      <div class="card-title">New Hire Information</div>
       <div class="form-grid">
         <div class="field span2">
           <label>New Hire Full Name</label>
@@ -558,11 +541,10 @@
       </div>
     </div>
 
-    <!-- Manager Override (editable) -->
     <div class="card">
-      <div class="card-title">📧 Manager Contact (Editable)</div>
+      <div class="card-title">Manager &amp; DM Contact (Editable)</div>
       <div style="font-size:13px; color:var(--muted); margin-bottom:16px;">
-        Pre-filled from your Store Setup. Edit here if needed — changes here won't affect saved defaults.
+        Pre-filled from your Store Setup. Edit here if needed â changes here won't affect saved defaults.
       </div>
       <div class="form-grid">
         <div class="field">
@@ -573,6 +555,10 @@
           <label>Store Manager Email</label>
           <input type="email" id="managerEmail" placeholder="Select a store first">
         </div>
+        <div class="field span2">
+          <label>District Manager (DM) Email</label>
+          <input type="email" id="dmEmail" placeholder="dm@blufoxmobile.com">
+        </div>
       </div>
     </div>
 
@@ -580,19 +566,16 @@
       <button class="btn btn-secondary" onclick="clearForm()">Clear Form</button>
       <button class="btn btn-success" onclick="submitForm()" id="submitBtn">
         <span class="spinner" id="spinner"></span>
-        <span id="submitLabel">Send Onboarding Email →</span>
+        <span id="submitLabel">Send Onboarding Email &rarr;</span>
       </button>
     </div>
   </div>
 
 </main>
 
-<div id="toast">✓ <span id="toastMsg"></span></div>
+<div id="toast">&#x2713; <span id="toastMsg"></span></div>
 
 <script>
-// ══════════════════════════════════════════════════════
-// STORE DATA
-// ══════════════════════════════════════════════════════
 const STORES = [
   { name: "Uptown",          address: "4401 N. Clarendon Road",                city: "Chicago",         state: "IL", zip: "60640" },
   { name: "Evanston",        address: "1608 Sherman Ave",                       city: "Evanston",        state: "IL", zip: "60201" },
@@ -619,9 +602,6 @@ const STORES = [
   { name: "Michigan City",   address: "5330 Franklin St",                       city: "Michigan City",   state: "IN", zip: "46360" },
 ];
 
-// ══════════════════════════════════════════════════════
-// STORAGE HELPERS
-// ══════════════════════════════════════════════════════
 function getManagerData() {
   try { return JSON.parse(localStorage.getItem('blufox_managers') || '{}'); }
   catch { return {}; }
@@ -640,7 +620,7 @@ function saveWebhook() {
   localStorage.setItem('blufox_webhook', url);
   const status = document.getElementById('webhookStatus');
   if (url) {
-    status.textContent = '✓ Webhook saved';
+    status.textContent = 'Webhook saved';
     status.className = 'webhook-status ok';
   } else {
     status.textContent = 'No webhook saved';
@@ -648,9 +628,6 @@ function saveWebhook() {
   }
 }
 
-// ══════════════════════════════════════════════════════
-// PAGE 1: STORE LIST
-// ══════════════════════════════════════════════════════
 let saveTimers = {};
 
 function renderStoreList(filter = '') {
@@ -662,7 +639,7 @@ function renderStoreList(filter = '') {
 
   filtered.forEach(store => {
     const key = store.name;
-    const mgr = managers[key] || { name: '', email: '' };
+    const mgr = managers[key] || { name: '', email: '', dmEmail: '' };
 
     const row = document.createElement('div');
     row.className = 'store-row';
@@ -687,7 +664,14 @@ function renderStoreList(filter = '') {
                onchange="saveManager('${key}', this, 'email')"
                oninput="queueSave('${key}')">
       </div>
-      <div class="save-indicator" id="saved-${key.replace(/\s/g,'_')}">✓ Saved</div>
+      <div class="field">
+        <label>DM Email</label>
+        <input type="email" placeholder="dm@blufoxmobile.com"
+               value="${mgr.dmEmail || ''}"
+               onchange="saveManager('${key}', this, 'dmEmail')"
+               oninput="queueSave('${key}')">
+      </div>
+      <div class="save-indicator" id="saved-${key.replace(/\s/g,'_')}">Saved</div>
     `;
     container.appendChild(row);
   });
@@ -707,7 +691,8 @@ function queueSave(storeName) {
     const managers = getManagerData();
     managers[storeName] = {
       name: inputs[0].value.trim(),
-      email: inputs[1].value.trim()
+      email: inputs[1].value.trim(),
+      dmEmail: inputs[2].value.trim()
     };
     saveManagerData(managers);
     const ind = document.getElementById('saved-' + safeKey);
@@ -720,7 +705,7 @@ function queueSave(storeName) {
 
 function saveManager(storeName, input, field) {
   const managers = getManagerData();
-  if (!managers[storeName]) managers[storeName] = { name: '', email: '' };
+  if (!managers[storeName]) managers[storeName] = { name: '', email: '', dmEmail: '' };
   managers[storeName][field] = input.value.trim();
   saveManagerData(managers);
 }
@@ -729,15 +714,12 @@ function filterStores(val) {
   renderStoreList(val);
 }
 
-// ══════════════════════════════════════════════════════
-// PAGE 2: NEW HIRE FORM
-// ══════════════════════════════════════════════════════
 function populateStoreDropdown() {
   const sel = document.getElementById('storeSelect');
   STORES.forEach(s => {
     const opt = document.createElement('option');
     opt.value = s.name;
-    opt.textContent = `${s.name} — ${s.city}, ${s.state}`;
+    opt.textContent = `${s.name} â ${s.city}, ${s.state}`;
     sel.appendChild(opt);
   });
 }
@@ -745,7 +727,7 @@ function populateStoreDropdown() {
 function onStoreSelect() {
   const storeName = document.getElementById('storeSelect').value;
   if (!storeName) {
-    ['storeAddress','storeCity','storeState','storeZip','managerName','managerEmail'].forEach(id => {
+    ['storeAddress','storeCity','storeState','storeZip','managerName','managerEmail','dmEmail'].forEach(id => {
       document.getElementById(id).value = '';
     });
     document.getElementById('managerPreview').style.display = 'none';
@@ -761,24 +743,26 @@ function onStoreSelect() {
   }
 
   const managers = getManagerData();
-  const mgr = managers[storeName] || { name: '', email: '' };
+  const mgr = managers[storeName] || { name: '', email: '', dmEmail: '' };
   document.getElementById('managerName').value = mgr.name;
   document.getElementById('managerEmail').value = mgr.email;
+  document.getElementById('dmEmail').value = mgr.dmEmail || '';
 
   const preview = document.getElementById('managerPreview');
   if (mgr.name || mgr.email) {
     preview.className = 'manager-preview';
-    preview.innerHTML = `✓ Manager: <strong>${mgr.name || 'Name not set'}</strong> — ${mgr.email || 'Email not set'}`;
+    let previewText = `Manager: <strong>${mgr.name || 'Name not set'}</strong> â ${mgr.email || 'Email not set'}`;
+    if (mgr.dmEmail) {
+      previewText += ` | DM: ${mgr.dmEmail}`;
+    }
+    preview.innerHTML = previewText;
   } else {
     preview.className = 'manager-preview warn';
-    preview.innerHTML = `⚠ No manager saved for this store. Please fill in below or go to Store Setup.`;
+    preview.innerHTML = `No manager saved for this store. Please fill in below or go to Store Setup.`;
   }
   preview.style.display = 'flex';
 }
 
-// ══════════════════════════════════════════════════════
-// SUBMIT
-// ══════════════════════════════════════════════════════
 async function submitForm() {
   const webhook = getWebhook();
   if (!webhook) {
@@ -794,6 +778,7 @@ async function submitForm() {
   const personalEmail = document.getElementById('personalEmail').value.trim();
   const managerName   = document.getElementById('managerName').value.trim();
   const managerEmail  = document.getElementById('managerEmail').value.trim();
+  const dmEmail       = document.getElementById('dmEmail').value.trim();
 
   if (!storeName || !hireName || !startDate || !rq4User || !blufoxEmail || !personalEmail) {
     showToast('Please fill in all required fields.', true);
@@ -814,10 +799,10 @@ async function submitForm() {
     personal_email: personalEmail,
     manager_name:   managerName,
     manager_email:  managerEmail,
+    dm_email:       dmEmail,
     submitted_at:   new Date().toISOString()
   };
 
-  // Show loading
   document.getElementById('spinner').style.display = 'block';
   document.getElementById('submitLabel').textContent = 'Sending...';
   document.getElementById('submitBtn').disabled = true;
@@ -835,13 +820,13 @@ async function submitForm() {
     console.error(err);
   } finally {
     document.getElementById('spinner').style.display = 'none';
-    document.getElementById('submitLabel').textContent = 'Send Onboarding Email →';
+    document.getElementById('submitLabel').textContent = 'Send Onboarding Email \u2192';
     document.getElementById('submitBtn').disabled = false;
   }
 }
 
 function clearForm() {
-  ['storeSelect','hireName','startDate','rq4User','blufoxEmail','personalEmail','managerName','managerEmail'].forEach(id => {
+  ['storeSelect','hireName','startDate','rq4User','blufoxEmail','personalEmail','managerName','managerEmail','dmEmail'].forEach(id => {
     document.getElementById(id).value = '';
   });
   ['storeAddress','storeCity','storeState','storeZip'].forEach(id => {
@@ -850,9 +835,6 @@ function clearForm() {
   document.getElementById('managerPreview').style.display = 'none';
 }
 
-// ══════════════════════════════════════════════════════
-// NAVIGATION
-// ══════════════════════════════════════════════════════
 function showPage(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -860,9 +842,6 @@ function showPage(page) {
   event.target.classList.add('active');
 }
 
-// ══════════════════════════════════════════════════════
-// TOAST
-// ══════════════════════════════════════════════════════
 let toastTimer;
 function showToast(msg, isError = false) {
   const toast = document.getElementById('toast');
@@ -872,9 +851,6 @@ function showToast(msg, isError = false) {
   toastTimer = setTimeout(() => { toast.className = ''; }, 3500);
 }
 
-// ══════════════════════════════════════════════════════
-// INIT
-// ══════════════════════════════════════════════════════
 (function init() {
   renderStoreList();
   populateStoreDropdown();
@@ -882,7 +858,7 @@ function showToast(msg, isError = false) {
   const savedWebhook = getWebhook();
   if (savedWebhook) {
     document.getElementById('webhookUrl').value = savedWebhook;
-    document.getElementById('webhookStatus').textContent = '✓ Webhook saved';
+    document.getElementById('webhookStatus').textContent = 'Webhook saved';
     document.getElementById('webhookStatus').className = 'webhook-status ok';
   }
 })();
