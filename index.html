@@ -460,7 +460,8 @@
     <div class="page-title">Store Setup</div>
     <div class="page-subtitle">Set manager names, emails &amp; DM emails per store. Changes save automatically as you type.</div>
 
-    <div class="card">
+    <!-- Webhook URL is hardcoded in JavaScript — no config needed -->
+    <div class="card" style="display:none">
       <div class="card-title">Zapier Webhook URL</div>
       <div class="webhook-row">
         <div class="field">
@@ -612,7 +613,7 @@ function saveManagerData(data) {
 }
 
 function getWebhook() {
-  return localStorage.getItem('blufox_webhook') || '';
+  return 'https://hooks.zapier.com/hooks/catch/20441079/ue0hxpm/';
 }
 
 function saveWebhook() {
@@ -855,12 +856,7 @@ function showToast(msg, isError = false) {
   renderStoreList();
   populateStoreDropdown();
 
-  const savedWebhook = getWebhook();
-  if (savedWebhook) {
-    document.getElementById('webhookUrl').value = savedWebhook;
-    document.getElementById('webhookStatus').textContent = 'Webhook saved';
-    document.getElementById('webhookStatus').className = 'webhook-status ok';
-  }
+  // Webhook is hardcoded — no need to load from localStorage
 })();
 </script>
 </body>
