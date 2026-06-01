@@ -54,16 +54,9 @@
     background-clip: text;
   }
 
-  .logo span {
-    color: var(--accent2);
-    -webkit-text-fill-color: var(--accent2);
-  }
+  .logo span { color: var(--accent2); -webkit-text-fill-color: var(--accent2); }
 
-  .header-actions {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
+  .header-actions { display: flex; align-items: center; gap: 14px; }
 
   .admin-link {
     font-family: 'DM Sans', sans-serif;
@@ -76,12 +69,7 @@
     border-radius: 50px;
     transition: all 0.2s;
   }
-
-  .admin-link:hover {
-    color: var(--text);
-    border-color: var(--muted);
-    background: var(--surface2);
-  }
+  .admin-link:hover { color: var(--text); border-color: var(--muted); background: var(--surface2); }
 
   .directory-pill {
     font-size: 11px;
@@ -94,23 +82,12 @@
     align-items: center;
     gap: 6px;
   }
+  .directory-pill.loaded  { color: var(--success); background: rgba(87,245,154,0.10); }
+  .directory-pill.loading { color: var(--muted);   background: rgba(107,158,122,0.10); }
+  .directory-pill.error   { color: #ff7a7a;         background: rgba(255,82,82,0.10); }
+  .directory-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 
-  .directory-pill.loaded { color: var(--success); background: rgba(87,245,154,0.10); }
-  .directory-pill.loading { color: var(--muted); background: rgba(107,158,122,0.10); }
-  .directory-pill.error { color: #ff7a7a; background: rgba(255,82,82,0.10); }
-
-  .directory-pill .dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: currentColor;
-  }
-
-  main {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 48px 24px;
-  }
+  main { max-width: 640px; margin: 0 auto; padding: 48px 24px; }
 
   .page-title {
     font-family: 'Bebas Neue', sans-serif;
@@ -120,12 +97,7 @@
     margin-bottom: 6px;
   }
 
-  .page-subtitle {
-    color: var(--muted);
-    font-size: 14px;
-    margin-bottom: 36px;
-    font-weight: 400;
-  }
+  .page-subtitle { color: var(--muted); font-size: 14px; margin-bottom: 36px; font-weight: 400; }
 
   .card {
     background: var(--surface);
@@ -144,20 +116,10 @@
     margin-bottom: 20px;
   }
 
-  .form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
-
-  .form-grid.full { grid-template-columns: 1fr; }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   .span2 { grid-column: 1 / -1; }
 
-  .field {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
+  .field { display: flex; flex-direction: column; gap: 6px; }
 
   label {
     font-size: 12px;
@@ -179,26 +141,11 @@
     outline: none;
     width: 100%;
   }
-
   input:focus, select:focus {
     border-color: var(--accent);
     box-shadow: 0 0 0 3px rgba(46,204,113,0.18);
   }
-
-  input[readonly] {
-    color: var(--muted);
-    cursor: default;
-    background: rgba(26,34,53,0.5);
-  }
-
-  input[readonly]:focus {
-    border-color: var(--border);
-    box-shadow: none;
-  }
-
-  select option {
-    background: var(--surface2);
-  }
+  select option { background: var(--surface2); }
 
   .btn {
     font-family: 'DM Sans', sans-serif;
@@ -214,69 +161,17 @@
     align-items: center;
     gap: 8px;
   }
-
-  .btn-primary {
-    background: var(--accent);
-    color: #000;
-  }
-
   .btn-secondary {
     background: transparent;
     color: var(--muted);
     border: 1px solid var(--border);
   }
+  .btn-secondary:hover { color: var(--text); border-color: var(--muted); background: var(--surface2); }
+  .btn-success { background: var(--success); color: #000; }
+  .btn-success:hover { background: #33eeaa; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(87,245,154,0.35); }
+  .btn-success:disabled { background: var(--surface2); color: var(--muted); cursor: not-allowed; transform: none; box-shadow: none; }
 
-  .btn-secondary:hover {
-    color: var(--text);
-    border-color: var(--muted);
-    background: var(--surface2);
-  }
-
-  .btn-success {
-    background: var(--success);
-    color: #000;
-  }
-
-  .btn-success:hover {
-    background: #33eeaa;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(87,245,154,0.35);
-  }
-
-  .btn-success:disabled {
-    background: var(--surface2);
-    color: var(--muted);
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-  }
-
-  .btn-row {
-    display: flex;
-    gap: 12px;
-    justify-content: flex-end;
-    margin-top: 24px;
-    align-items: center;
-  }
-
-  .manager-preview {
-    background: var(--surface2);
-    border: 1px solid rgba(0,232,157,0.2);
-    border-radius: 8px;
-    padding: 14px 18px;
-    font-size: 13px;
-    color: var(--success);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 16px;
-    line-height: 1.45;
-  }
-
-  .manager-preview.warn {
-    border-color: rgba(255,107,43,0.3);
-    color: var(--accent2);
-  }
+  .btn-row { display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; align-items: center; }
 
   .directory-error {
     background: rgba(255,82,82,0.08);
@@ -292,7 +187,6 @@
     gap: 12px;
     flex-wrap: wrap;
   }
-
   .directory-error .retry {
     font-size: 12px;
     padding: 8px 14px;
@@ -302,7 +196,6 @@
     color: var(--text);
     cursor: pointer;
   }
-
   .directory-error .retry:hover { background: rgba(255,255,255,0.05); }
 
   #toast {
@@ -325,35 +218,23 @@
     align-items: center;
     gap: 8px;
   }
-
-  #toast.show {
-    transform: translateY(0);
-    opacity: 1;
-  }
-
-  #toast.error {
-    background: #ff5252;
-    color: #fff;
-  }
+  #toast.show { transform: translateY(0); opacity: 1; }
+  #toast.error { background: #ff5252; color: #fff; }
 
   .spinner {
-    width: 16px;
-    height: 16px;
+    width: 16px; height: 16px;
     border: 2px solid rgba(0,0,0,0.3);
     border-top-color: #000;
     border-radius: 50%;
     animation: spin 0.6s linear infinite;
     display: none;
   }
-
   .spinner.small-muted {
-    width: 10px;
-    height: 10px;
+    width: 10px; height: 10px;
     border: 2px solid rgba(255,255,255,0.2);
     border-top-color: currentColor;
     display: inline-block;
   }
-
   @keyframes spin { to { transform: rotate(360deg); } }
 
   @media (max-width: 640px) {
@@ -375,9 +256,8 @@
 </header>
 
 <main>
-
   <div class="page-title">New Hire Form</div>
-  <div class="page-subtitle">Pick a store — manager &amp; DM details auto-fill from the Store Directory. Submission triggers the onboarding email.</div>
+  <div class="page-subtitle">Select a store, then fill in the new rep's info. Submission triggers the onboarding email.</div>
 
   <div id="directoryError" class="directory-error" style="display:none">
     <div>
@@ -387,41 +267,23 @@
     <button class="retry" onclick="loadDirectory()">Retry</button>
   </div>
 
+  <!-- STORE SELECTOR -->
   <div class="card">
-    <div class="card-title">Store Information</div>
-    <div class="form-grid">
-      <div class="field span2">
-        <label>Store Name</label>
-        <select id="storeSelect" onchange="onStoreSelect()" disabled>
-          <option value="">— Loading stores… —</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Store Address</label>
-        <input type="text" id="storeAddress" readonly placeholder="Auto-filled">
-      </div>
-      <div class="field">
-        <label>City</label>
-        <input type="text" id="storeCity" readonly placeholder="Auto-filled">
-      </div>
-      <div class="field">
-        <label>State</label>
-        <input type="text" id="storeState" readonly placeholder="Auto-filled">
-      </div>
-      <div class="field">
-        <label>Zip Code</label>
-        <input type="text" id="storeZip" readonly placeholder="Auto-filled">
-      </div>
+    <div class="card-title">Store</div>
+    <div class="field">
+      <label>Store Name</label>
+      <select id="storeSelect" onchange="onStoreSelect()" disabled>
+        <option value="">— Loading stores… —</option>
+      </select>
     </div>
-
-    <div id="managerPreview" style="display:none"></div>
   </div>
 
+  <!-- NEW HIRE INFO -->
   <div class="card">
-    <div class="card-title">New Hire Information</div>
+    <div class="card-title">New Rep Information</div>
     <div class="form-grid">
       <div class="field span2">
-        <label>New Hire Full Name</label>
+        <label>Full Name</label>
         <input type="text" id="hireName" placeholder="First and Last Name">
       </div>
       <div class="field">
@@ -443,26 +305,14 @@
     </div>
   </div>
 
-  <div class="card">
-    <div class="card-title">Manager &amp; DM Contact (Editable)</div>
-    <div style="font-size:13px; color:var(--muted); margin-bottom:16px;">
-      Pre-filled from the Store Directory. Edit here for this submission only — to change the saved default, use <a href="https://blufoxmobile.github.io/Admin-Panel-Directory/" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">Manage stores</a>.
-    </div>
-    <div class="form-grid">
-      <div class="field">
-        <label>Store Manager Name</label>
-        <input type="text" id="managerName" placeholder="Select a store first">
-      </div>
-      <div class="field">
-        <label>Store Manager Email</label>
-        <input type="email" id="managerEmail" placeholder="Select a store first">
-      </div>
-      <div class="field span2">
-        <label>District Manager (DM) Email</label>
-        <input type="email" id="dmEmail" placeholder="dm@blufoxmobile.com">
-      </div>
-    </div>
-  </div>
+  <!-- Hidden fields — auto-filled from directory, sent in webhook payload -->
+  <input type="hidden" id="storeAddress">
+  <input type="hidden" id="storeCity">
+  <input type="hidden" id="storeState">
+  <input type="hidden" id="storeZip">
+  <input type="hidden" id="managerName">
+  <input type="hidden" id="managerEmail">
+  <input type="hidden" id="dmEmail">
 
   <div class="btn-row">
     <button class="btn btn-secondary" onclick="clearForm()">Clear Form</button>
@@ -478,48 +328,17 @@
 
 <script>
 // ============================================================================
-//  CONFIG — pulls from the shared Store Directory
+//  CONFIG
 // ============================================================================
-const DIRECTORY_URL =
-  'https://raw.githubusercontent.com/blufoxmobile/Daily-Sales-Report/main/data/store-directory.json';
+const DIRECTORY_URL = 'https://raw.githubusercontent.com/blufoxmobile/Daily-Sales-Report/main/data/store-directory.json';
 const ZAPIER_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/20441079/ue0hxpm/';
-
-// Local address book used to auto-fill street/city/state/zip after a store is selected.
-// The Store Directory tracks store NAMES, manager NAMES, and email routing — addresses
-// live here. Keys are matched flexibly (full "X Xfinity Store" or just "X").
-const ADDRESS_BOOK = [
-  { name: "Uptown",            address: "4401 N. Clarendon Road",                   city: "Chicago",          state: "IL", zip: "60640" },
-  { name: "Evanston",          address: "1608 Sherman Ave",                          city: "Evanston",         state: "IL", zip: "60201" },
-  { name: "Cicero",            address: "2942 South Cicero, Unit A",                 city: "Cicero",           state: "IL", zip: "60804" },
-  { name: "Kildeer",           address: "20291 N Rand Rd, Suite 113",                city: "Kildeer",          state: "IL", zip: "60074" },
-  { name: "Skokie",            address: "6179 North Lincoln Avenue",                 city: "Chicago",          state: "IL", zip: "60659" },
-  { name: "South Skokie",      address: "6179 North Lincoln Avenue",                 city: "Chicago",          state: "IL", zip: "60659" },
-  { name: "Round Lake Beach",  address: "530 East Rollins Road",                     city: "Round Lake Beach", state: "IL", zip: "60073" },
-  { name: "Glenview",          address: "2840 Patriot Boulevard",                    city: "Glenview",         state: "IL", zip: "60026" },
-  { name: "Bourbonnais",       address: "1690 N State Route 50, Suite B",            city: "Bourbonnais",      state: "IL", zip: "60914" },
-  { name: "Calumet City",      address: "TBD",                                       city: "Calumet City",     state: "IL", zip: "TBD"   },
-  { name: "Tinley Park",       address: "15935 Harlem Ave",                          city: "Tinley Park",      state: "IL", zip: "60477" },
-  { name: "Frankfort",         address: "20151 South La Grange Road",                city: "Frankfort",        state: "IL", zip: "60423" },
-  { name: "Burbank",           address: "7782 South Cicero Avenue",                  city: "Burbank",          state: "IL", zip: "60459" },
-  { name: "Dekalb",            address: "2565 Sycamore Rd",                          city: "Dekalb",           state: "IL", zip: "60115" },
-  { name: "Elkhart",           address: "199 County Road 6 W",                       city: "Elkhart",          state: "IN", zip: "46514" },
-  { name: "Evergreen Park",    address: "9524 S Western Avenue",                     city: "Evergreen Park",   state: "IL", zip: "60805" },
-  { name: "Greeneville",       address: "1331 Tusculum Blvd",                        city: "Greeneville",      state: "TN", zip: "37745" },
-  { name: "Johnson City",      address: "509 North State of Franklin Road, Suite 3", city: "Johnson City",     state: "TN", zip: "37604" },
-  { name: "Oak Ridge",         address: "349 S Illinois Ave",                        city: "Oak Ridge",        state: "TN", zip: "37830" },
-  { name: "South Knoxville",   address: "4409 Chapman Highway, Suite Q",             city: "Knoxville",        state: "TN", zip: "37920" },
-  { name: "Hammond",           address: "1738 165th Street, STE 100",                city: "Hammond",          state: "IN", zip: "46320" },
-  { name: "Schererville",      address: "116 U.S. 41, Suite B",                      city: "Schererville",     state: "IN", zip: "46375" },
-  { name: "Valparaiso",        address: "2710 Laporte Ave, Suite 140",               city: "Valparaiso",       state: "IN", zip: "46383" },
-  { name: "South Bend",        address: "4615 Miami Street, Suite 3",                city: "South Bend",       state: "IN", zip: "46614" },
-  { name: "Michigan City",     address: "5330 Franklin St",                          city: "Michigan City",    state: "IN", zip: "46360" },
-];
 
 // ============================================================================
 //  STATE
 // ============================================================================
 let directory = {
   stores: [],
+  storeAddresses: {},
   storeManagerNames: {},
   storeManagers: {},
   storeDMs: {}
@@ -531,21 +350,16 @@ let directory = {
 function setDirectoryStatus(state, label){
   const el = document.getElementById('directoryStatus');
   el.className = 'directory-pill ' + state;
-  if(state === 'loading'){
-    el.innerHTML = '<span class="spinner small-muted"></span> ' + label;
-  } else {
-    el.innerHTML = '<span class="dot"></span> ' + label;
-  }
+  el.innerHTML = state === 'loading'
+    ? '<span class="spinner small-muted"></span> ' + label
+    : '<span class="dot"></span> ' + label;
 }
 
 function showDirectoryError(msg){
   document.getElementById('directoryError').style.display = 'flex';
   document.getElementById('directoryErrorDetail').textContent = msg || '';
 }
-
-function hideDirectoryError(){
-  document.getElementById('directoryError').style.display = 'none';
-}
+function hideDirectoryError(){ document.getElementById('directoryError').style.display = 'none'; }
 
 // ============================================================================
 //  DIRECTORY FETCH
@@ -560,20 +374,20 @@ async function loadDirectory(){
     if(!resp.ok) throw new Error('HTTP ' + resp.status);
     const json = await resp.json();
     directory = {
-      stores: Array.isArray(json.stores) ? json.stores.slice() : [],
+      stores:            Array.isArray(json.stores) ? json.stores.slice() : [],
+      storeAddresses:    (json.storeAddresses    && typeof json.storeAddresses    === 'object') ? json.storeAddresses    : {},
       storeManagerNames: (json.storeManagerNames && typeof json.storeManagerNames === 'object') ? json.storeManagerNames : {},
-      storeManagers: (json.storeManagers && typeof json.storeManagers === 'object') ? json.storeManagers : {},
-      storeDMs: (json.storeDMs && typeof json.storeDMs === 'object') ? json.storeDMs : {}
+      storeManagers:     (json.storeManagers     && typeof json.storeManagers     === 'object') ? json.storeManagers     : {},
+      storeDMs:          (json.storeDMs          && typeof json.storeDMs          === 'object') ? json.storeDMs          : {}
     };
     populateStoreDropdown();
     document.getElementById('storeSelect').disabled = false;
     document.getElementById('submitBtn').disabled = false;
     const updated = json.updatedAt ? new Date(json.updatedAt) : null;
-    const label = updated
+    setDirectoryStatus('loaded', updated
       ? 'Directory loaded · ' + updated.toLocaleDateString('en-US', { month:'short', day:'numeric' })
-      : 'Directory loaded';
-    setDirectoryStatus('loaded', label);
-  } catch (err) {
+      : 'Directory loaded');
+  } catch(err) {
     console.error('Directory load failed', err);
     setDirectoryStatus('error', 'Directory error');
     showDirectoryError(err.message || String(err));
@@ -584,68 +398,61 @@ async function loadDirectory(){
 function populateStoreDropdown(){
   const sel = document.getElementById('storeSelect');
   sel.innerHTML = '<option value="">— Select a Store —</option>';
-  const sorted = directory.stores.slice().sort((a,b) => a.localeCompare(b));
-  sorted.forEach(name => {
+  directory.stores.slice().sort((a,b) => a.localeCompare(b)).forEach(name => {
     const opt = document.createElement('option');
     opt.value = name;
-    const addr = lookupAddress(name);
-    opt.textContent = addr ? `${name} — ${addr.city}, ${addr.state}` : name;
+    // Show city/state hint from address if available
+    const fullAddr = directory.storeAddresses[name] || '';
+    const parts = fullAddr ? fullAddr.split(',') : [];
+    // address format: "street, city, state zip" — city is index -2, state+zip is index -1
+    let hint = '';
+    if(parts.length >= 3){
+      const stateZip = parts[parts.length - 1].trim().split(' ');
+      const state = stateZip[0] || '';
+      const city  = parts[parts.length - 2].trim();
+      hint = city && state ? ` — ${city}, ${state}` : '';
+    }
+    opt.textContent = name + hint;
     sel.appendChild(opt);
   });
 }
 
 // ============================================================================
-//  ADDRESS LOOKUP
-// ============================================================================
-function normalizeStoreKey(name){
-  if(!name) return '';
-  return String(name).toLowerCase().replace(/\s*xfinity\s*store\s*$/i, '').trim();
-}
-
-function lookupAddress(directoryName){
-  const key = normalizeStoreKey(directoryName);
-  if(!key) return null;
-  return ADDRESS_BOOK.find(s => normalizeStoreKey(s.name) === key) || null;
-}
-
-// ============================================================================
-//  STORE SELECTION
+//  STORE SELECTION — silently populate hidden fields
 // ============================================================================
 function onStoreSelect(){
   const storeName = document.getElementById('storeSelect').value;
-  const fields = ['storeAddress','storeCity','storeState','storeZip','managerName','managerEmail','dmEmail'];
+
   if(!storeName){
-    fields.forEach(id => { document.getElementById(id).value = ''; });
-    document.getElementById('managerPreview').style.display = 'none';
+    ['storeAddress','storeCity','storeState','storeZip','managerName','managerEmail','dmEmail']
+      .forEach(id => { document.getElementById(id).value = ''; });
     return;
   }
 
-  const addr = lookupAddress(storeName);
-  document.getElementById('storeAddress').value = addr ? addr.address : '';
-  document.getElementById('storeCity').value    = addr ? addr.city    : '';
-  document.getElementById('storeState').value   = addr ? addr.state   : '';
-  document.getElementById('storeZip').value     = addr ? addr.zip     : '';
-
-  const mgrName  = directory.storeManagerNames[storeName] || '';
-  const mgrEmail = directory.storeManagers[storeName]     || '';
-  const dmEmail  = directory.storeDMs[storeName]          || '';
-
-  document.getElementById('managerName').value  = mgrName;
-  document.getElementById('managerEmail').value = mgrEmail;
-  document.getElementById('dmEmail').value      = dmEmail;
-
-  const preview = document.getElementById('managerPreview');
-  if(mgrName || mgrEmail || dmEmail){
-    preview.className = 'manager-preview';
-    let html = `Manager: <strong>${escapeHtml(mgrName || 'Name not set')}</strong>`;
-    if(mgrEmail) html += ` — ${escapeHtml(mgrEmail)}`;
-    if(dmEmail)  html += ` &nbsp;|&nbsp; DM: ${escapeHtml(dmEmail)}`;
-    preview.innerHTML = html;
-  } else {
-    preview.className = 'manager-preview warn';
-    preview.innerHTML = 'No manager or DM saved for this store. <a href="https://blufoxmobile.github.io/Admin-Panel-Directory/" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">Set it in Manage stores</a> — or fill it in below for this submission.';
+  // Parse full address string "street, city, state zip"
+  const fullAddr = directory.storeAddresses[storeName] || '';
+  let street = '', city = '', state = '', zip = '';
+  if(fullAddr){
+    const parts = fullAddr.split(',').map(s => s.trim());
+    if(parts.length >= 3){
+      // Last part: "state zip"
+      const lastParts = parts[parts.length - 1].split(' ').filter(Boolean);
+      state = lastParts[0] || '';
+      zip   = lastParts[1] || '';
+      city  = parts[parts.length - 2];
+      street = parts.slice(0, parts.length - 2).join(', ');
+    } else {
+      street = fullAddr;
+    }
   }
-  preview.style.display = 'flex';
+
+  document.getElementById('storeAddress').value  = street;
+  document.getElementById('storeCity').value      = city;
+  document.getElementById('storeState').value     = state;
+  document.getElementById('storeZip').value       = zip;
+  document.getElementById('managerName').value    = directory.storeManagerNames[storeName] || '';
+  document.getElementById('managerEmail').value   = directory.storeManagers[storeName]     || '';
+  document.getElementById('dmEmail').value        = directory.storeDMs[storeName]          || '';
 }
 
 // ============================================================================
@@ -658,30 +465,26 @@ async function submitForm(){
   const rq4User       = document.getElementById('rq4User').value.trim();
   const blufoxEmail   = document.getElementById('blufoxEmail').value.trim();
   const personalEmail = document.getElementById('personalEmail').value.trim();
-  const managerName   = document.getElementById('managerName').value.trim();
-  const managerEmail  = document.getElementById('managerEmail').value.trim();
-  const dmEmail       = document.getElementById('dmEmail').value.trim();
 
   if(!storeName || !hireName || !startDate || !rq4User || !blufoxEmail || !personalEmail){
     showToast('Please fill in all required fields.', true);
     return;
   }
 
-  const addr = lookupAddress(storeName);
   const payload = {
     store_name:     storeName,
-    store_address:  addr ? `${addr.address}, ${addr.city}, ${addr.state} ${addr.zip}` : '',
-    store_city:     addr ? addr.city  : '',
-    store_state:    addr ? addr.state : '',
-    store_zip:      addr ? addr.zip   : '',
+    store_address:  document.getElementById('storeAddress').value,
+    store_city:     document.getElementById('storeCity').value,
+    store_state:    document.getElementById('storeState').value,
+    store_zip:      document.getElementById('storeZip').value,
     hire_name:      hireName,
     start_date:     startDate,
     rq4_username:   rq4User,
     blufox_email:   blufoxEmail,
     personal_email: personalEmail,
-    manager_name:   managerName,
-    manager_email:  managerEmail,
-    dm_email:       dmEmail,
+    manager_name:   document.getElementById('managerName').value,
+    manager_email:  document.getElementById('managerEmail').value,
+    dm_email:       document.getElementById('dmEmail').value,
     submitted_at:   new Date().toISOString()
   };
 
@@ -695,7 +498,7 @@ async function submitForm(){
     await fetch(ZAPIER_WEBHOOK, { method: 'POST', body: formData });
     showToast(`Onboarding email triggered for ${hireName}!`);
     clearForm();
-  } catch (err) {
+  } catch(err) {
     showToast('Failed to send. Check webhook URL or network.', true);
     console.error(err);
   } finally {
@@ -706,11 +509,10 @@ async function submitForm(){
 }
 
 function clearForm(){
-  ['storeSelect','hireName','startDate','rq4User','blufoxEmail','personalEmail','managerName','managerEmail','dmEmail']
+  ['storeSelect','hireName','startDate','rq4User','blufoxEmail','personalEmail']
     .forEach(id => { document.getElementById(id).value = ''; });
-  ['storeAddress','storeCity','storeState','storeZip']
+  ['storeAddress','storeCity','storeState','storeZip','managerName','managerEmail','dmEmail']
     .forEach(id => { document.getElementById(id).value = ''; });
-  document.getElementById('managerPreview').style.display = 'none';
 }
 
 // ============================================================================
