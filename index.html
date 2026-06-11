@@ -313,6 +313,7 @@
   <input type="hidden" id="managerName">
   <input type="hidden" id="managerEmail">
   <input type="hidden" id="dmEmail">
+  <input type="hidden" id="asmEmail">
 
   <div class="btn-row">
     <button class="btn btn-secondary" onclick="clearForm()">Clear Form</button>
@@ -424,7 +425,7 @@ function onStoreSelect(){
   const storeName = document.getElementById('storeSelect').value;
 
   if(!storeName){
-    ['storeAddress','storeCity','storeState','storeZip','managerName','managerEmail','dmEmail']
+    ['storeAddress','storeCity','storeState','storeZip','managerName','managerEmail','dmEmail','asmEmail']
       .forEach(id => { document.getElementById(id).value = ''; });
     return;
   }
@@ -453,6 +454,7 @@ function onStoreSelect(){
   document.getElementById('managerName').value    = directory.storeManagerNames[storeName] || '';
   document.getElementById('managerEmail').value   = directory.storeManagers[storeName]     || '';
   document.getElementById('dmEmail').value        = directory.storeDMs[storeName]          || '';
+  document.getElementById('asmEmail').value      = (directory.storeAMs || {})[storeName]    || '';
 }
 
 // ============================================================================
@@ -485,6 +487,7 @@ async function submitForm(){
     manager_name:   document.getElementById('managerName').value,
     manager_email:  document.getElementById('managerEmail').value,
     dm_email:       document.getElementById('dmEmail').value,
+    asm_email:      document.getElementById('asmEmail').value,
     submitted_at:   new Date().toISOString()
   };
 
@@ -511,7 +514,7 @@ async function submitForm(){
 function clearForm(){
   ['storeSelect','hireName','startDate','rq4User','blufoxEmail','personalEmail']
     .forEach(id => { document.getElementById(id).value = ''; });
-  ['storeAddress','storeCity','storeState','storeZip','managerName','managerEmail','dmEmail']
+  ['storeAddress','storeCity','storeState','storeZip','managerName','managerEmail','dmEmail','asmEmail']
     .forEach(id => { document.getElementById(id).value = ''; });
 }
 
