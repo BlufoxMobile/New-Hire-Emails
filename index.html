@@ -434,7 +434,10 @@
 // ============================================================================
 const DIRECTORY_URL = 'https://raw.githubusercontent.com/blufoxmobile/Daily-Sales-Report/main/data/store-directory.json';
 const ZAPIER_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/20441079/ue0hxpm/';
-const MY_EMAIL = 'jbilbrey@blufoxmobile.com'; // "my stores" = stores tied to this address in the Admin Panel directory
+// Jeff is the regional manager — "my stores" = EVERY store listed in the
+// Admin Panel directory (https://blufoxmobile.github.io/Admin-Panel-Directory/).
+// The store list is fetched live on every page load, so directory changes
+// flow through automatically.
 
 // Fallback column positions (0-based) if headers can't be matched by name:
 // F=Store, G=New Hire, I=Pending Start Date, L=RQ User Name, M=Blufox Email, O=Personal Email
@@ -508,20 +511,16 @@ async function loadDirectory(){
   }
 }
 
-// "My stores" — exactly as the Admin Panel directory lists them for MY_EMAIL,
-// whether as store manager or as DM. Recomputed on every load, so directory
-// changes flow through automatically with no code edits.
+// "My stores" — every store in the Admin Panel directory (Jeff oversees the
+// whole region). Recomputed on every load, so directory changes flow through
+// automatically with no code edits.
 function computeMyStores(){
-  const me = MY_EMAIL.toLowerCase();
-  myStores = directory.stores.filter(s =>
-    String(directory.storeManagers[s] || '').toLowerCase() === me ||
-    String(directory.storeDMs[s]      || '').toLowerCase() === me
-  );
+  myStores = directory.stores.slice();
   const line = document.getElementById('myStoresLine');
   line.innerHTML = myStores.length
-    ? 'Filtering to <b>your stores</b> (from the Admin Panel directory): ' +
-      myStores.map(s => '<b>' + escapeHtml(s) + '</b>').join(' · ')
-    : '⚠️ No stores in the directory are tied to ' + escapeHtml(MY_EMAIL) + ' — check the Admin Panel.';
+    ? 'Filtering to <b>your ' + myStores.length + ' stores</b> (everything in the Admin Panel directory): ' +
+      myStores.slice().sort((a,b) => a.localeCompare(b)).map(s => escapeHtml(s.replace(/\s*Xfinity Store$/i,''))).join(' · ')
+    : '⚠️ The Admin Panel directory returned no stores — check the directory.';
 }
 
 function populateStoreDropdown(){
