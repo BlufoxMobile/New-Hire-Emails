@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Blufox Mobile — New Hire Onboarding</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
   :root {
     --bg: #071a0e;
@@ -87,7 +88,7 @@
   .directory-pill.error   { color: #ff7a7a;         background: rgba(255,82,82,0.10); }
   .directory-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 
-  main { max-width: 640px; margin: 0 auto; padding: 48px 24px; }
+  main { max-width: 720px; margin: 0 auto; padding: 48px 24px; }
 
   .page-title {
     font-family: 'Bebas Neue', sans-serif;
@@ -198,6 +199,81 @@
   }
   .directory-error .retry:hover { background: rgba(255,255,255,0.05); }
 
+  /* ===== Excel upload zone ===== */
+  .dropzone {
+    border: 2px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 34px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--surface2);
+  }
+  .dropzone:hover, .dropzone.dragover {
+    border-color: var(--accent);
+    background: rgba(46,204,113,0.06);
+  }
+  .dropzone .dz-icon { font-size: 30px; margin-bottom: 8px; }
+  .dropzone .dz-main { font-size: 15px; font-weight: 600; }
+  .dropzone .dz-sub  { font-size: 12px; color: var(--muted); margin-top: 6px; }
+
+  .my-stores-line { font-size: 12px; color: var(--muted); margin-top: 14px; line-height: 1.6; }
+  .my-stores-line b { color: var(--accent2); font-weight: 600; }
+
+  .parse-summary {
+    font-size: 13px;
+    color: var(--muted);
+    margin: 18px 0 4px;
+    line-height: 1.6;
+  }
+  .parse-summary b { color: var(--text); }
+
+  .rep-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-top: 12px;
+    background: var(--surface2);
+  }
+  .rep-row.sent { opacity: 0.55; border-color: var(--success); }
+  .rep-row input[type="checkbox"] {
+    width: 18px; height: 18px;
+    accent-color: var(--accent);
+    margin-top: 3px;
+    flex: none;
+    cursor: pointer;
+  }
+  .rep-main { flex: 1; min-width: 0; }
+  .rep-name { font-size: 15px; font-weight: 600; }
+  .rep-store { font-size: 12px; color: var(--accent2); margin-top: 2px; }
+  .rep-details {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 6px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    line-height: 1.5;
+    word-break: break-all;
+  }
+  .rep-status { font-size: 12px; font-weight: 600; flex: none; margin-top: 3px; }
+  .rep-status.ok  { color: var(--success); }
+  .rep-status.err { color: #ff7a7a; }
+
+  .upload-warn {
+    background: rgba(255,193,7,0.08);
+    border: 1px solid rgba(255,193,7,0.3);
+    color: #ffe08a;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 12.5px;
+    margin-top: 14px;
+    line-height: 1.55;
+  }
+
   #toast {
     position: fixed;
     bottom: 30px;
@@ -256,8 +332,8 @@
 </header>
 
 <main>
-  <div class="page-title">New Hire Form</div>
-  <div class="page-subtitle">Select a store, then fill in the new rep's info. Submission triggers the onboarding email.</div>
+  <div class="page-title">New Hire Onboarding</div>
+  <div class="page-subtitle">Drop in the weekly new-hire workbook — it pulls out your stores' reps automatically. Or use the manual form below for a single hire.</div>
 
   <div id="directoryError" class="directory-error" style="display:none">
     <div>
@@ -267,9 +343,34 @@
     <button class="retry" onclick="loadDirectory()">Retry</button>
   </div>
 
+  <!-- ===== WEEKLY EXCEL UPLOAD ===== -->
+  <div class="card">
+    <div class="card-title">Weekly Excel Upload</div>
+    <div class="dropzone" id="dropzone" onclick="document.getElementById('fileInput').click()">
+      <div class="dz-icon">📄</div>
+      <div class="dz-main">Drop the weekly new-hire workbook here</div>
+      <div class="dz-sub">or click to browse — .xlsx / .xls · reads Store (F), New Hire (G), Start Date (I), RQ Username (L), Blufox Email (M), Personal Email (O)</div>
+    </div>
+    <input type="file" id="fileInput" accept=".xlsx,.xls,.xlsm" style="display:none" onchange="handleFile(this.files[0]); this.value='';">
+    <div class="my-stores-line" id="myStoresLine">Your stores load from the directory…</div>
+
+    <div id="parseResults" style="display:none">
+      <div class="parse-summary" id="parseSummary"></div>
+      <div id="repList"></div>
+      <div id="parseWarnings"></div>
+      <div class="btn-row">
+        <button class="btn btn-secondary" onclick="clearUpload()">Clear</button>
+        <button class="btn btn-success" id="bulkSendBtn" onclick="bulkSend()">
+          <span class="spinner" id="bulkSpinner"></span>
+          <span id="bulkSendLabel">Send Onboarding Emails →</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- STORE SELECTOR -->
   <div class="card">
-    <div class="card-title">Store</div>
+    <div class="card-title">Manual Entry — Store</div>
     <div class="field">
       <label>Store Name</label>
       <select id="storeSelect" onchange="onStoreSelect()" disabled>
@@ -333,6 +434,11 @@
 // ============================================================================
 const DIRECTORY_URL = 'https://raw.githubusercontent.com/blufoxmobile/Daily-Sales-Report/main/data/store-directory.json';
 const ZAPIER_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/20441079/ue0hxpm/';
+const MY_EMAIL = 'jbilbrey@blufoxmobile.com'; // "my stores" = stores tied to this address in the Admin Panel directory
+
+// Fallback column positions (0-based) if headers can't be matched by name:
+// F=Store, G=New Hire, I=Pending Start Date, L=RQ User Name, M=Blufox Email, O=Personal Email
+const FALLBACK_COLS = { store: 5, name: 6, date: 8, rq: 11, blufox: 12, personal: 14 };
 
 // ============================================================================
 //  STATE
@@ -342,8 +448,12 @@ let directory = {
   storeAddresses: {},
   storeManagerNames: {},
   storeManagers: {},
-  storeDMs: {}
+  storeDMs: {},
+  storeAMs: {}
 };
+let myStores = [];        // directory store names that belong to MY_EMAIL
+let parsedReps = [];      // reps parsed from the uploaded workbook (my stores only)
+let sending = false;      // true while bulkSend is in flight — locks upload UI
 
 // ============================================================================
 //  UI HELPERS
@@ -379,8 +489,10 @@ async function loadDirectory(){
       storeAddresses:    (json.storeAddresses    && typeof json.storeAddresses    === 'object') ? json.storeAddresses    : {},
       storeManagerNames: (json.storeManagerNames && typeof json.storeManagerNames === 'object') ? json.storeManagerNames : {},
       storeManagers:     (json.storeManagers     && typeof json.storeManagers     === 'object') ? json.storeManagers     : {},
-      storeDMs:          (json.storeDMs          && typeof json.storeDMs          === 'object') ? json.storeDMs          : {}
+      storeDMs:          (json.storeDMs          && typeof json.storeDMs          === 'object') ? json.storeDMs          : {},
+      storeAMs:          (json.storeAMs          && typeof json.storeAMs          === 'object') ? json.storeAMs          : {}
     };
+    computeMyStores();
     populateStoreDropdown();
     document.getElementById('storeSelect').disabled = false;
     document.getElementById('submitBtn').disabled = false;
@@ -394,6 +506,22 @@ async function loadDirectory(){
     showDirectoryError(err.message || String(err));
     document.getElementById('storeSelect').innerHTML = '<option value="">— Directory unavailable —</option>';
   }
+}
+
+// "My stores" — exactly as the Admin Panel directory lists them for MY_EMAIL,
+// whether as store manager or as DM. Recomputed on every load, so directory
+// changes flow through automatically with no code edits.
+function computeMyStores(){
+  const me = MY_EMAIL.toLowerCase();
+  myStores = directory.stores.filter(s =>
+    String(directory.storeManagers[s] || '').toLowerCase() === me ||
+    String(directory.storeDMs[s]      || '').toLowerCase() === me
+  );
+  const line = document.getElementById('myStoresLine');
+  line.innerHTML = myStores.length
+    ? 'Filtering to <b>your stores</b> (from the Admin Panel directory): ' +
+      myStores.map(s => '<b>' + escapeHtml(s) + '</b>').join(' · ')
+    : '⚠️ No stores in the directory are tied to ' + escapeHtml(MY_EMAIL) + ' — check the Admin Panel.';
 }
 
 function populateStoreDropdown(){
@@ -416,6 +544,326 @@ function populateStoreDropdown(){
     opt.textContent = name + hint;
     sel.appendChild(opt);
   });
+}
+
+// ============================================================================
+//  EXCEL UPLOAD + PARSE
+// ============================================================================
+const dz = document.getElementById('dropzone');
+['dragenter','dragover'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.add('dragover'); }));
+['dragleave','drop'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.remove('dragover'); }));
+dz.addEventListener('drop', e => {
+  const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+  if(f) handleFile(f);
+});
+
+// Normalize a store name for matching sheet ↔ directory
+// "South Bend" ↔ "South Bend Xfinity Store", case/punctuation-insensitive
+function normStore(s){
+  return String(s == null ? '' : s)
+    .toLowerCase()
+    .replace(/xfinity\s*store/g, '')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+
+// Extract the FIRST date from a cell that may contain notes,
+// e.g. "7/13 moved from 7/6/2026" → 2026-07-13.
+// Returns "YYYY-MM-DD" or ''.
+function extractFirstDate(raw){
+  const s = String(raw == null ? '' : raw).trim();
+  if(!s) return '';
+  // Accepts "7/13", "7/13/26", "07/13/2026", "7-13-2026", ISO "2026-07-13" —
+  // scans left to right and returns the first VALID date found.
+  const re = /(20\d{2})-(\d{1,2})-(\d{1,2})|(\d{1,2})[\/\-](\d{1,2})(?:[\/\-](\d{2,4}))?/g;
+  let m;
+  while((m = re.exec(s))){
+    let yr, mo, da;
+    if(m[1]){                       // ISO yyyy-mm-dd
+      yr = parseInt(m[1], 10); mo = parseInt(m[2], 10); da = parseInt(m[3], 10);
+    } else {                        // US m/d or m/d/yy or m/d/yyyy
+      mo = parseInt(m[4], 10); da = parseInt(m[5], 10);
+      if(m[6]){
+        yr = parseInt(m[6], 10);
+        if(yr < 100) yr += 2000;
+      } else {
+        // No year on the first date — borrow a 4-digit year mentioned later in
+        // the note ("7/13 moved from 7/6/2026"), else use the current year.
+        const yLater = s.slice(m.index + m[0].length).match(/\b(20\d{2})\b/);
+        yr = yLater ? parseInt(yLater[1], 10) : new Date().getFullYear();
+      }
+    }
+    if(mo >= 1 && mo <= 12 && da >= 1 && da <= 31)
+      return yr + '-' + String(mo).padStart(2,'0') + '-' + String(da).padStart(2,'0');
+  }
+  return '';
+}
+
+// Find header row + column indexes by header text, with fixed-position fallback.
+function mapColumns(rows){
+  const want = {
+    store:    h => /\bstore\b/.test(h),
+    name:     h => /new\s*hire/.test(h),
+    date:     h => /start\s*date/.test(h),
+    rq:       h => /rq\s*user/.test(h),
+    blufox:   h => /blufox\s*e-?mail/.test(h),
+    personal: h => /personal\s*e-?mail/.test(h)
+  };
+  for(let r = 0; r < Math.min(rows.length, 10); r++){
+    const headers = (rows[r] || []).map(c => String(c == null ? '' : c).toLowerCase().replace(/\s+/g,' ').trim());
+    const cols = {};
+    Object.entries(want).forEach(([key, test]) => {
+      const idx = headers.findIndex(h => h && test(h));
+      if(idx !== -1) cols[key] = idx;
+    });
+    if(cols.store != null && cols.name != null){
+      // Fill any misses from the fixed layout
+      Object.entries(FALLBACK_COLS).forEach(([k, v]) => { if(cols[k] == null) cols[k] = v; });
+      return { headerRow: r, cols };
+    }
+  }
+  return { headerRow: 0, cols: Object.assign({}, FALLBACK_COLS) };
+}
+
+function handleFile(file){
+  if(!file) return;
+  if(sending){
+    showToast('Hold on — emails are still sending.', true);
+    return;
+  }
+  if(!directory.stores.length){
+    showToast('Directory not loaded yet — wait a second and retry.', true);
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const wb = XLSX.read(new Uint8Array(e.target.result), { type: 'array', cellDates: false });
+      const ws = wb.Sheets[wb.SheetNames[0]];
+      // raw:false → every cell (incl. real Excel dates) arrives as its
+      // formatted display string, so date parsing is uniform.
+      const rows = XLSX.utils.sheet_to_json(ws, { header: 1, raw: false, defval: '' });
+      parseWorkbookRows(rows, wb.SheetNames[0], file.name);
+    } catch(err) {
+      console.error(err);
+      showToast('Could not read that file — is it a valid Excel workbook?', true);
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function parseWorkbookRows(rows, sheetName, fileName){
+  const { headerRow, cols } = mapColumns(rows);
+
+  // Map of normalized name → directory store name (my stores only)
+  const mineByNorm = {};
+  myStores.forEach(s => { mineByNorm[normStore(s)] = s; });
+
+  let total = 0, matchedMine = 0;
+  const reps = [], warnings = [];
+
+  for(let r = headerRow + 1; r < rows.length; r++){
+    const row = rows[r] || [];
+    const hireName = String(row[cols.name] || '').trim();
+    const storeRaw = String(row[cols.store] || '').trim();
+    if(!hireName && !storeRaw) continue;      // blank row
+    if(!hireName) continue;                    // no rep name — skip
+    total++;
+
+    const dirStore = mineByNorm[normStore(storeRaw)];
+    if(!dirStore) continue;                    // not one of my stores
+    matchedMine++;
+
+    const startDate = extractFirstDate(row[cols.date]);
+    const rep = {
+      store: dirStore,
+      storeRaw,
+      name: hireName,
+      startDate,
+      rq: String(row[cols.rq] || '').trim(),
+      blufox: String(row[cols.blufox] || '').trim(),
+      personal: String(row[cols.personal] || '').trim(),
+      selected: true,
+      status: ''
+    };
+    const missing = [];
+    if(!rep.startDate) missing.push('start date');
+    if(!rep.rq)        missing.push('RQ username');
+    if(!rep.blufox)    missing.push('Blufox email');
+    if(!rep.personal)  missing.push('personal email');
+    if(missing.length){
+      rep.warning = 'Missing: ' + missing.join(', ');
+      warnings.push(escapeHtml(rep.name) + ' — ' + rep.warning);
+    }
+    reps.push(rep);
+  }
+
+  parsedReps = reps;
+  renderParseResults({ fileName, sheetName, total, matchedMine, warnings });
+}
+
+function renderParseResults(info){
+  const box = document.getElementById('parseResults');
+  const summary = document.getElementById('parseSummary');
+  const list = document.getElementById('repList');
+  const warnBox = document.getElementById('parseWarnings');
+  box.style.display = 'block';
+
+  summary.innerHTML =
+    '<b>' + escapeHtml(info.fileName) + '</b> (sheet “' + escapeHtml(info.sheetName) + '”) — ' +
+    '<b>' + info.total + '</b> new hires in file · ' +
+    '<b>' + info.matchedMine + '</b> at your stores · ' +
+    (info.total - info.matchedMine) + ' filtered out (other regions).';
+
+  if(!parsedReps.length){
+    list.innerHTML = '<div class="upload-warn">No new hires at your stores in this week\'s file — nothing to send.</div>';
+    warnBox.innerHTML = '';
+    document.getElementById('bulkSendBtn').disabled = true;
+    updateBulkLabel();
+    return;
+  }
+
+  list.innerHTML = parsedReps.map((rep, i) => `
+    <div class="rep-row" id="repRow${i}">
+      <input type="checkbox" id="repChk${i}" ${rep.selected ? 'checked' : ''} onchange="parsedReps[${i}].selected = this.checked; updateBulkLabel();">
+      <div class="rep-main">
+        <div class="rep-name">${escapeHtml(rep.name)}</div>
+        <div class="rep-store">${escapeHtml(rep.store)}${normStore(rep.storeRaw) !== normStore(rep.store) ? ' (listed as “' + escapeHtml(rep.storeRaw) + '”)' : ''}</div>
+        <div class="rep-details">
+          <span>📅 ${escapeHtml(rep.startDate || '—')}</span>
+          <span>RQ: ${escapeHtml(rep.rq || '—')}</span>
+          <span>${escapeHtml(rep.blufox || '—')}</span>
+          <span>${escapeHtml(rep.personal || '—')}</span>
+        </div>
+        ${rep.warning ? '<div class="upload-warn" style="margin-top:8px">⚠️ ' + escapeHtml(rep.warning) + ' — fix in the manual form below if needed.</div>' : ''}
+      </div>
+      <div class="rep-status" id="repStatus${i}"></div>
+    </div>
+  `).join('');
+
+  warnBox.innerHTML = '';
+  document.getElementById('bulkSendBtn').disabled = false;
+  updateBulkLabel();
+}
+
+function updateBulkLabel(){
+  const n = parsedReps.filter(r => r.selected && r.status !== 'sent').length;
+  document.getElementById('bulkSendLabel').textContent =
+    n === 1 ? 'Send 1 Onboarding Email →' : 'Send ' + n + ' Onboarding Emails →';
+  document.getElementById('bulkSendBtn').disabled = n === 0;
+}
+
+function clearUpload(){
+  if(sending){
+    showToast('Hold on — emails are still sending.', true);
+    return;
+  }
+  parsedReps = [];
+  document.getElementById('parseResults').style.display = 'none';
+  document.getElementById('repList').innerHTML = '';
+  document.getElementById('parseSummary').innerHTML = '';
+  document.getElementById('parseWarnings').innerHTML = '';
+}
+
+// ============================================================================
+//  BULK SEND — one webhook trigger per rep (same payload as the manual form)
+// ============================================================================
+function buildPayloadFor(rep){
+  const storeName = rep.store;
+  const fullAddr = directory.storeAddresses[storeName] || '';
+  let street = '', city = '', state = '', zip = '';
+  if(fullAddr){
+    const parts = fullAddr.split(',').map(s => s.trim());
+    if(parts.length >= 3){
+      const lastParts = parts[parts.length - 1].split(' ').filter(Boolean);
+      state = lastParts[0] || '';
+      zip   = lastParts[1] || '';
+      city  = parts[parts.length - 2];
+      street = parts.slice(0, parts.length - 2).join(', ');
+    } else {
+      street = fullAddr;
+    }
+  }
+  return {
+    store_name:     storeName,
+    store_address:  street,
+    store_city:     city,
+    store_state:    state,
+    store_zip:      zip,
+    hire_name:      rep.name,
+    start_date:     rep.startDate,
+    rq4_username:   rep.rq,
+    blufox_email:   rep.blufox,
+    personal_email: rep.personal,
+    manager_name:   directory.storeManagerNames[storeName] || '',
+    manager_email:  directory.storeManagers[storeName]     || '',
+    dm_email:       directory.storeDMs[storeName]          || '',
+    asm_email:      (directory.storeAMs || {})[storeName]  || '',
+    submitted_at:   new Date().toISOString()
+  };
+}
+
+async function bulkSend(){
+  const queue = parsedReps
+    .map((rep, i) => ({ rep, i }))
+    .filter(x => x.rep.selected && x.rep.status !== 'sent');
+  if(!queue.length) return;
+
+  // Hold the line on incomplete reps
+  const incomplete = queue.filter(x => !x.rep.startDate || !x.rep.rq || !x.rep.blufox || !x.rep.personal);
+  if(incomplete.length){
+    const ok = confirm(
+      incomplete.length + ' rep(s) have missing fields:\n\n' +
+      incomplete.map(x => '• ' + x.rep.name + ' (' + x.rep.warning + ')').join('\n') +
+      '\n\nSend anyway? (Cancel to uncheck them first.)'
+    );
+    if(!ok) return;
+  }
+
+  const btn = document.getElementById('bulkSendBtn');
+  btn.disabled = true;
+  sending = true;
+  document.getElementById('bulkSpinner').style.display = 'block';
+
+  let sent = 0, failed = 0;
+  for(const { rep, i } of queue){
+    document.getElementById('bulkSendLabel').textContent = 'Sending ' + (sent + failed + 1) + ' of ' + queue.length + '…';
+    try {
+      document.getElementById('repStatus' + i).textContent = '…';
+      const formData = new URLSearchParams();
+      Object.entries(buildPayloadFor(rep)).forEach(([k, v]) => formData.append(k, v));
+      const resp = await fetch(ZAPIER_WEBHOOK, { method: 'POST', body: formData });
+      if(resp && resp.ok === false) throw new Error('HTTP ' + resp.status);
+      rep.status = 'sent';
+      sent++;
+      const rowEl = document.getElementById('repRow' + i);
+      rowEl.classList.add('sent');
+      document.getElementById('repChk' + i).disabled = true;
+      const st = document.getElementById('repStatus' + i);
+      st.textContent = '✓ Sent';
+      st.className = 'rep-status ok';
+    } catch(err) {
+      console.error('Send failed for', rep.name, err);
+      rep.status = 'error';
+      failed++;
+      const st = document.getElementById('repStatus' + i);
+      st.textContent = '✗ Failed';
+      st.className = 'rep-status err';
+    }
+    // Small gap between triggers so Zapier ingests each one cleanly
+    await new Promise(res => setTimeout(res, 600));
+  }
+
+  sending = false;
+  document.getElementById('bulkSpinner').style.display = 'none';
+  updateBulkLabel();
+  if(failed === 0){
+    showToast('Onboarding emails triggered for ' + sent + ' rep' + (sent === 1 ? '' : 's') + '!');
+  } else {
+    showToast(sent + ' sent, ' + failed + ' failed — retry the failed ones.', true);
+    document.getElementById('bulkSendBtn').disabled = false;
+    document.getElementById('bulkSendLabel').textContent = 'Retry Failed →';
+  }
 }
 
 // ============================================================================
@@ -458,7 +906,7 @@ function onStoreSelect(){
 }
 
 // ============================================================================
-//  SUBMIT
+//  SUBMIT (manual single-hire form)
 // ============================================================================
 async function submitForm(){
   const storeName     = document.getElementById('storeSelect').value;
@@ -498,7 +946,8 @@ async function submitForm(){
   try {
     const formData = new URLSearchParams();
     Object.entries(payload).forEach(([k, v]) => formData.append(k, v));
-    await fetch(ZAPIER_WEBHOOK, { method: 'POST', body: formData });
+    const resp = await fetch(ZAPIER_WEBHOOK, { method: 'POST', body: formData });
+    if(!resp.ok) throw new Error('HTTP ' + resp.status);
     showToast(`Onboarding email triggered for ${hireName}!`);
     clearForm();
   } catch(err) {
