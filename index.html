@@ -434,6 +434,7 @@
 // ============================================================================
 const DIRECTORY_URL = 'https://raw.githubusercontent.com/blufoxmobile/Daily-Sales-Report/main/data/store-directory.json';
 const ZAPIER_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/20441079/ue0hxpm/';
+const REGIONAL_EMAIL = 'jbilbrey@blufoxmobile.com'; // always CC'd on every onboarding email
 // Jeff is the regional manager — "my stores" = EVERY store listed in the
 // Admin Panel directory (https://blufoxmobile.github.io/Admin-Panel-Directory/).
 // The store list is fetched live on every page load, so directory changes
@@ -765,6 +766,46 @@ function clearUpload(){
 }
 
 // ============================================================================
+//  RECIPIENT AGGREGATION
+//  Ready-to-map fields for the Zapier → Outlook step so no one gets dropped:
+//    to_emails — new hire's Blufox + personal email
+//    cc_emails — store manager + assistant manager + DM + regional (Jeff),
+//                blanks removed, deduped, comma-separated
+// ============================================================================
+function dedupeEmails(list){
+  const seen = {};
+  return list
+    .map(e => String(e == null ? '' : e).trim())
+    .filter(e => {
+      if(!e || !e.includes('@')) return false;
+      const k = e.toLowerCase();
+      if(seen[k]) return false;
+      seen[k] = true;
+      return true;
+    });
+}
+
+function withRecipientFields(payload){
+  payload.to_emails = dedupeEmails([payload.blufox_email, payload.personal_email]).join(',');
+  payload.cc_emails = dedupeEmails([
+    payload.manager_email,
+    payload.asm_email,
+    payload.dm_email,
+    REGIONAL_EMAIL
+  ]).join(',');
+  payload.regional_email = REGIONAL_EMAIL;
+  payload.all_recipients = dedupeEmails([
+    payload.blufox_email,
+    payload.personal_email,
+    payload.manager_email,
+    payload.asm_email,
+    payload.dm_email,
+    REGIONAL_EMAIL
+  ]).join(',');
+  return payload;
+}
+
+// ============================================================================
 //  BULK SEND — one webhook trigger per rep (same payload as the manual form)
 // ============================================================================
 function buildPayloadFor(rep){
@@ -783,7 +824,7 @@ function buildPayloadFor(rep){
       street = fullAddr;
     }
   }
-  return {
+  const payload = {
     store_name:     storeName,
     store_address:  street,
     store_city:     city,
@@ -800,6 +841,7 @@ function buildPayloadFor(rep){
     asm_email:      (directory.storeAMs || {})[storeName]  || '',
     submitted_at:   new Date().toISOString()
   };
+  return withRecipientFields(payload);
 }
 
 async function bulkSend(){
@@ -937,6 +979,7 @@ async function submitForm(){
     asm_email:      document.getElementById('asmEmail').value,
     submitted_at:   new Date().toISOString()
   };
+  withRecipientFields(payload);
 
   document.getElementById('spinner').style.display = 'block';
   document.getElementById('submitLabel').textContent = 'Sending…';
